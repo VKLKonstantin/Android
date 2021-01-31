@@ -7,7 +7,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivitySecond extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
