@@ -4,49 +4,34 @@ package com.example.lesson2;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Calculator extends AppCompatActivity implements View.OnClickListener {
-    private double value1 = 0;
-    private double value2 = 0;
-    private double result = 0;
-
-    private boolean trigger = false;
-
     private Button buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine, buttonZero;
     private Button buttonMinus, buttonPlus, buttonMultiply, buttonDivision, buttonPoint, buttonEquals, buttonClear, buttonCE;
-
     private TextView monitor;
     private String s;
     private final static String KEY = "key";
+    private LogicCalculator calculator = calculator = new LogicCalculator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calculator);
-
         initView();
         initListener();
-
-
     }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button1:
-
                 monitor.append("1");
-
-
                 break;
             case R.id.button2:
                 monitor.append("2");
@@ -75,34 +60,33 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
             case R.id.button0:
                 monitor.append("0");
                 break;
-
             case R.id.buttonPlus:
-                calculationAdd();
+                calculator.calculationAdd(monitor);
                 monitor.setText("");
                 monitor.append("+");
                 break;
             case R.id.buttonMinus:
-                calculationMinus();
+                calculator.calculationMinus(monitor);
                 monitor.setText("");
                 monitor.append("-");
                 break;
             case R.id.buttonMultiply:
-                calculationMultiply();
+                calculator.calculationMultiply(monitor);
                 monitor.setText("");
                 monitor.append("*");
                 break;
             case R.id.buttonDivision:
-                calculationDivision();
+                calculator.calculationDivision(monitor);
                 monitor.setText("");
                 monitor.append("/");
                 break;
             case R.id.buttonEquals:
-                outputResult();
+                calculator.outputResult(monitor);
                 break;
 
             case R.id.buttonC:
                 monitor.setText("");
-                clearMonitorAndMemory();
+                calculator.clearMonitorAndMemory();
                 break;
             case R.id.buttonPoint:
                 monitor.setText(".");
@@ -128,7 +112,6 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         buttonEight = findViewById(R.id.button8);
         buttonNine = findViewById(R.id.button9);
         buttonZero = findViewById(R.id.button0);
-
         buttonMinus = findViewById(R.id.buttonMinus);
         buttonPlus = findViewById(R.id.buttonPlus);
         buttonMultiply = findViewById(R.id.buttonMultiply);
@@ -137,10 +120,9 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         buttonEquals = findViewById(R.id.buttonEquals);
         buttonClear = findViewById(R.id.buttonC);
         buttonCE = findViewById(R.id.buttonCE);
-
         buttonClear.setBackgroundColor(Color.RED);
         monitor = findViewById(R.id.monitor);
-       monitor.setMovementMethod(new ScrollingMovementMethod());
+        monitor.setMovementMethod(new ScrollingMovementMethod());
     }
 
     public void initListener() {
@@ -154,7 +136,6 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         buttonEight.setOnClickListener(this);
         buttonNine.setOnClickListener(this);
         buttonZero.setOnClickListener(this);
-
         buttonMinus.setOnClickListener(this);
         buttonPlus.setOnClickListener(this);
         buttonMultiply.setOnClickListener(this);
@@ -162,9 +143,7 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         buttonPoint.setOnClickListener(this);
         buttonEquals.setOnClickListener(this);
         buttonCE.setOnClickListener(this);
-
         buttonClear.setOnClickListener(this);
-
     }
 
     @Override
@@ -181,106 +160,4 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         monitor.setText(s);
     }
 
-    public TextView getMonitor() {
-        return monitor;
-    }
-
-
-    public void calculationAdd() {
-        if (trigger == false) {
-            value1 = Double.valueOf(monitor.getText().toString());
-            trigger = true;
-
-        } else {
-            value2 = Double.valueOf(monitor.getText().toString());
-            value1 = value1 + value2;
-        }
-    }
-
-    public void calculationMinus() {
-        if (trigger == false) {
-            value1 = Double.valueOf(monitor.getText().toString());
-            trigger = true;
-
-        } else {
-            value2 = Double.valueOf(monitor.getText().toString());
-            value1 = value1 - value2;
-        }
-    }
-
-    public void calculationMultiply() {
-        if (trigger == false) {
-            value1 = Double.valueOf(monitor.getText().toString());
-            trigger = true;
-
-        } else {
-            value2 = Double.valueOf(monitor.getText().toString());
-            value1 = value1 * value2;
-        }
-    }
-
-    public void calculationDivision() {
-        if (trigger == false) {
-            value1 = Double.valueOf(monitor.getText().toString());
-            trigger = true;
-
-        } else {
-            value2 = Double.valueOf(monitor.getText().toString());
-            if (value2 != 0) {
-                value1 = value1 / value2;
-            } else {
-                monitor.setText("Деление на ноль");
-            }
-
-        }
-    }
-
-    public void outputResult() {
-
-        String str = monitor.getText().toString();
-        if (!str.equals("")) {
-            //    Log.d("myTag", Arrays.toString(new String[]{mass[0]}));
-            if (str.startsWith("+")) {
-                String[] mass = str.split("\\+", 2);
-                value2 = Double.parseDouble(mass[1]);
-                result = value1 + value2;
-            }
-            if (str.startsWith("-")) {
-                String[] mass = str.split("\\-", 2);
-                value2 = Double.parseDouble(mass[1]);
-                result = value1 - value2;
-            }
-            if (str.startsWith("*")) {
-                String[] mass = str.split("\\*", 2);
-                value2 = Double.parseDouble(mass[1]);
-                result = value1 * value2;
-            }
-            if (str.startsWith("/")) {
-                String[] mass = str.split("\\/", 2);
-                value2 = Double.parseDouble(mass[1]);
-                if (value2 != 0) {
-                    result = value1 / value2;
-                } else {
-                    monitor.setText("Деление на ноль");
-                }
-            }
-
-        }
-        monitor.setText(String.valueOf(result));
-        clearMonitorAndMemory();
-    }
-
-    public void clearMonitorAndMemory() {
-        value1 = 0;
-        value2 = 0;
-        result = 0;
-        trigger = false;
-
-    }
-
-    /*public void transmitValue(){
-        Intent intent = new Intent(this,LogicCalculator.class);
-        intent.putExtra("valueMonitor", monitor.getText());
-
-    }*/
 }
