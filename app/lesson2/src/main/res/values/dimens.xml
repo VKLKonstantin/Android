@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="button_text">20dp</dimen>
-    <dimen name="button_textForCAndEq">36dp</dimen>
-    <dimen name="button_textForCAndEqHorizont">25dp</dimen>
+    <dimen name="button_text_size">20sp</dimen>
+    <dimen name="button_textForCAndEq">36sp</dimen>
+    <dimen name="button_textForCAndEqHorizont">25sp</dimen>
+
+    <dimen name="margin_start">30dp</dimen>
+
+    <dimen name="height_button">53dp</dimen>
+    <dimen name="width_button">65dp</dimen>
+
+    <dimen name="height_buttonCAndEq">94dp</dimen>
+    <dimen name="width_buttonCAndEq">174dp</dimen>
+
 </resources>

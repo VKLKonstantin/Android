@@ -4,16 +4,25 @@ package com.example.lesson2;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Calculator extends AppCompatActivity implements View.OnClickListener {
+    private double value1 = 0;
+    private double value2 = 0;
+    private double result = 0;
+
+    private boolean trigger = false;
+
     private Button buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine, buttonZero;
-    private Button buttonMinus, buttonPlus, buttonMultiply, buttonDivision, buttonPoint, buttonEquals, buttonClear;
+    private Button buttonMinus, buttonPlus, buttonMultiply, buttonDivision, buttonPoint, buttonEquals, buttonClear, buttonCE;
+
     private TextView monitor;
     private String s;
     private final static String KEY = "key";
@@ -34,6 +43,7 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button1:
+
                 monitor.append("1");
 
 
@@ -67,26 +77,41 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
                 break;
 
             case R.id.buttonPlus:
+                calculationAdd();
+                monitor.setText("");
                 monitor.append("+");
                 break;
             case R.id.buttonMinus:
+                calculationMinus();
+                monitor.setText("");
                 monitor.append("-");
                 break;
             case R.id.buttonMultiply:
+                calculationMultiply();
+                monitor.setText("");
                 monitor.append("*");
                 break;
             case R.id.buttonDivision:
+                calculationDivision();
+                monitor.setText("");
                 monitor.append("/");
                 break;
             case R.id.buttonEquals:
-                monitor.append("=");
+                outputResult();
                 break;
 
             case R.id.buttonC:
                 monitor.setText("");
+                clearMonitorAndMemory();
                 break;
             case R.id.buttonPoint:
                 monitor.setText(".");
+                break;
+            case R.id.buttonCE:
+                String str = monitor.getText().toString();
+                if (!str.equals(""))
+                    str = str.substring(0, str.length() - 1);
+                monitor.setText(str);
                 break;
         }
 
@@ -111,9 +136,11 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         buttonPoint = findViewById(R.id.buttonPoint);
         buttonEquals = findViewById(R.id.buttonEquals);
         buttonClear = findViewById(R.id.buttonC);
+        buttonCE = findViewById(R.id.buttonCE);
+
         buttonClear.setBackgroundColor(Color.RED);
-        monitor = findViewById(R.id.Monitor);
-        monitor.setMovementMethod(new ScrollingMovementMethod());
+        monitor = findViewById(R.id.monitor);
+       monitor.setMovementMethod(new ScrollingMovementMethod());
     }
 
     public void initListener() {
@@ -134,6 +161,7 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         buttonDivision.setOnClickListener(this);
         buttonPoint.setOnClickListener(this);
         buttonEquals.setOnClickListener(this);
+        buttonCE.setOnClickListener(this);
 
         buttonClear.setOnClickListener(this);
 
@@ -152,4 +180,107 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
         s = savedInstanceState.getString(KEY);
         monitor.setText(s);
     }
+
+    public TextView getMonitor() {
+        return monitor;
+    }
+
+
+    public void calculationAdd() {
+        if (trigger == false) {
+            value1 = Double.valueOf(monitor.getText().toString());
+            trigger = true;
+
+        } else {
+            value2 = Double.valueOf(monitor.getText().toString());
+            value1 = value1 + value2;
+        }
+    }
+
+    public void calculationMinus() {
+        if (trigger == false) {
+            value1 = Double.valueOf(monitor.getText().toString());
+            trigger = true;
+
+        } else {
+            value2 = Double.valueOf(monitor.getText().toString());
+            value1 = value1 - value2;
+        }
+    }
+
+    public void calculationMultiply() {
+        if (trigger == false) {
+            value1 = Double.valueOf(monitor.getText().toString());
+            trigger = true;
+
+        } else {
+            value2 = Double.valueOf(monitor.getText().toString());
+            value1 = value1 * value2;
+        }
+    }
+
+    public void calculationDivision() {
+        if (trigger == false) {
+            value1 = Double.valueOf(monitor.getText().toString());
+            trigger = true;
+
+        } else {
+            value2 = Double.valueOf(monitor.getText().toString());
+            if (value2 != 0) {
+                value1 = value1 / value2;
+            } else {
+                monitor.setText("Деление на ноль");
+            }
+
+        }
+    }
+
+    public void outputResult() {
+
+        String str = monitor.getText().toString();
+        if (!str.equals("")) {
+            //    Log.d("myTag", Arrays.toString(new String[]{mass[0]}));
+            if (str.startsWith("+")) {
+                String[] mass = str.split("\\+", 2);
+                value2 = Double.parseDouble(mass[1]);
+                result = value1 + value2;
+            }
+            if (str.startsWith("-")) {
+                String[] mass = str.split("\\-", 2);
+                value2 = Double.parseDouble(mass[1]);
+                result = value1 - value2;
+            }
+            if (str.startsWith("*")) {
+                String[] mass = str.split("\\*", 2);
+                value2 = Double.parseDouble(mass[1]);
+                result = value1 * value2;
+            }
+            if (str.startsWith("/")) {
+                String[] mass = str.split("\\/", 2);
+                value2 = Double.parseDouble(mass[1]);
+                if (value2 != 0) {
+                    result = value1 / value2;
+                } else {
+                    monitor.setText("Деление на ноль");
+                }
+            }
+
+        }
+        monitor.setText(String.valueOf(result));
+        clearMonitorAndMemory();
+    }
+
+    public void clearMonitorAndMemory() {
+        value1 = 0;
+        value2 = 0;
+        result = 0;
+        trigger = false;
+
+    }
+
+    /*public void transmitValue(){
+        Intent intent = new Intent(this,LogicCalculator.class);
+        intent.putExtra("valueMonitor", monitor.getText());
+
+    }*/
 }
