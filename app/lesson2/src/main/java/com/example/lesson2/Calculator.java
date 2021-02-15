@@ -89,7 +89,7 @@ public class Calculator extends AppCompatActivity implements View.OnClickListene
                 calculator.clearMonitorAndMemory();
                 break;
             case R.id.buttonPoint:
-                monitor.setText(".");
+                monitor.append(".");
                 break;
             case R.id.buttonCE:
                 String str = monitor.getText().toString();
