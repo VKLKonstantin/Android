@@ -8,7 +8,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     tools:context=".Calculator">
-    <!-- android:background="#4E4949"-->
+
     <Button
         android:id="@+id/buttonPlus"
         android:layout_width="65dp"
@@ -213,10 +213,12 @@
         android:alpha="0.5"
         android:background="@drawable/picture_monitor"
 
+        android:gravity="center"
         android:maxLines="5"
         android:scrollbars="vertical"
         android:text=""
-        android:textSize="36sp"
+        android:textColor="@color/white"
+        android:textSize="50dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintLeft_toLeftOf="parent"
 
@@ -227,6 +229,7 @@
         android:id="@+id/guideline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.4" />
 
